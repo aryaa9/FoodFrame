@@ -4,7 +4,7 @@ import ImagePickerComponent from './components/ImagePickerComponent';
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Image Picker Example</Text>
+      <Text style={styles.header}> Image part  </Text>
       <ImagePickerComponent />
     </SafeAreaView>
   );
