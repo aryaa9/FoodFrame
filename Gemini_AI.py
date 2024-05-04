@@ -88,3 +88,46 @@ def combine_images(image_names, image_paths):
     
     return ingredient_list
 
+# generate_dish: generates a dish from the images in image_paths
+# array, array, int -> str
+def generate_dish(image_names, image_paths, max_calories = None):
+    ingredient_list = combine_images(image_names, image_paths)
+    
+    if max_calories:
+        prompt = (f"""
+          Create a dish using only the following ingredients:
+          {ingredient_list}
+          The dish should not exceed {max_calories} calories.
+          Provide a step-by-step recipe including nutritional information,
+          using only these ingredients as main components. 
+          You may use common pantry items such as spices and oils as side ingredients.
+          All measurements should be in grams.
+          Store the dish in json format of: {{dish_name: , ingredients: , 
+          instructions: , nutritional_information: , tips: }}
+          """)
+    else:
+        prompt = (f"""
+          Create a dish using only the following ingredients:
+          {ingredient_list}
+          Provide a step-by-step recipe including nutritional information,
+          using only these ingredients as main components. 
+          You may use common pantry items such as spices and oils as side ingredients.
+          All measurements should be in grams.
+          Store the dish in json format of: {{dish_name: , ingredients: , 
+          instructions: , nutritional_information: , tips: }}
+          """)
+
+    model = GenerativeModel("gemini-1.0-pro-vision")
+
+    prompt_part = Part.from_text(prompt)
+    ingredients_part = Part.from_text(ingredient_list)
+
+    contents = [prompt_part, ingredients_part]
+
+    responses = model.generate_content(
+        contents = contents,
+        generation_config = generation_config,
+        safety_settings = safety_settings,
+        stream = False
+    )
+    return responses.text
