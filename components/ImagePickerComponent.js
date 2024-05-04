@@ -55,7 +55,7 @@ const ImagePickerComponent = () => {
       await uploadBytes(fileRef, blob);  // Upload the blob directly
       const firebaseUrl = await getDownloadURL(fileRef);
       console.log('Image uploaded successfully! URL:', firebaseUrl);
-      return firebaseUrl;  // Optionally return the URL
+      return firebaseUrl; 
     } catch (error) {
       console.error("Error uploading image: ", error);
     }
