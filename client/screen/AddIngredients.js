@@ -1,7 +1,8 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
-import ImagePickerComponent from './components/ImagePickerComponent'; 
-const App = () => {
+import ImagePickerComponent from '../components/ImagePickerComponent'; 
+
+export default function AddIngredients() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}> Image part  </Text>
@@ -22,5 +23,3 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   }
 });
-
-export default App;
