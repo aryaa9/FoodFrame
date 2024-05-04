@@ -227,10 +227,8 @@ def main():
             image_path = sys.argv[3]
             result = image_to_json(image_name, image_path)
             print(result)
-        elif func == 'json_to_image':
-            json_file = sys.argv[2]
-            image_url = json_to_image(json_file)
-            print(image_url)
+        else:
+            print("Invalid function name")
 
 
 if __name__ == '__main__':
