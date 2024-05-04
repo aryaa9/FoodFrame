@@ -76,3 +76,15 @@ def image_to_json(image_name, image_path):
     )
 
     return responses.text
+
+# combine_images: combines the responses of multiple images in image_paths
+# array -> str
+def combine_images(image_names, image_paths):
+    ingredient_list = ""
+
+    for i in range(len(image_names)):
+        response = image_to_json(image_names[i], image_paths[i])
+        ingredient_list += f"ingredient {i + 1}: {response}\n"
+    
+    return ingredient_list
+
