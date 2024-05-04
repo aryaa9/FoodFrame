@@ -1,0 +1,4 @@
+<key>NSCameraUsageDescription</key>
+<string>Need camera access to take pictures</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Need photo access to pick images</string>
