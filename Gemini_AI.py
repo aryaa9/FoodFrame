@@ -6,6 +6,7 @@ from PIL import Image as PILImage
 from io import BytesIO
 import sys
 import json
+import openai
 
 # Load environment variables from .env file
 load_dotenv()
@@ -15,8 +16,10 @@ project_id = os.getenv('PROJECT_ID')
 location = os.getenv('LOCATION')
 google_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
+
 # Set the GOOGLE_APPLICATION_CREDENTIALS environment variable
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_credentials
+# you have to call `export GOOGLE_APPLICATION_CREDENTIALS=your_credentials.json` in the terminal
 
 vertexai.init(project = project_id, location = location)
 
@@ -132,13 +135,39 @@ def generate_dish(image_names, image_paths, max_calories = None):
     )
     return responses.text
 
+
+# Set up API key for OPENAI
+api_key = os.getenv('OPENAI_API_KEY')
+client = openai.OpenAI(api_key=api_key)
+
+# json_to_image: generates an image from the description of a json file
+# str (.json) -> str (image url
+def json_to_image(json_file):
+    prompt = (f"""
+              Generate an image of the following food: 
+              {json_file}
+              """)
+
+    response = client.images.generate(
+        model="dall-e-2",
+        prompt=prompt,
+        size="512x512",
+        quality="standard",
+        n=1
+    )
+    image_url = response.data[0].url
+    return image_url
+
 def main():
     if len(sys.argv) > 1:
         func = sys.argv[1]  # the function to call
         if func == 'generate_dish':
             image_names = json.loads(sys.argv[2])
             image_paths = json.loads(sys.argv[3])
-            count = int(sys.argv[4])
+            if (sys.argv[4]):
+                count = int(sys.argv[4])
+            else:
+                count = None
             result = generate_dish(image_names, image_paths, count)
             print(result)
         elif func == 'image_to_json':
@@ -146,6 +175,10 @@ def main():
             image_path = sys.argv[3]
             result = image_to_json(image_name, image_path)
             print(result)
+        elif func == 'json_to_image':
+            json_file = sys.argv[2]
+            image_url = json_to_image(json_file)
+            print(image_url)
 
 
 if __name__ == '__main__':
