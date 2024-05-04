@@ -27,7 +27,9 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
-
+.env
+.gitignore
+service_account.json
 # local env files
 .env*.local
 
