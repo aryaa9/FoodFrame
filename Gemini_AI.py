@@ -131,3 +131,22 @@ def generate_dish(image_names, image_paths, max_calories = None):
         stream = False
     )
     return responses.text
+
+def main():
+    if len(sys.argv) > 1:
+        func = sys.argv[1]  # the function to call
+        if func == 'generate_dish':
+            image_names = json.loads(sys.argv[2])
+            image_paths = json.loads(sys.argv[3])
+            count = int(sys.argv[4])
+            result = generate_dish(image_names, image_paths, count)
+            print(result)
+        elif func == 'image_to_json':
+            image_name = sys.argv[2]
+            image_path = sys.argv[3]
+            result = image_to_json(image_name, image_path)
+            print(result)
+
+
+if __name__ == '__main__':
+    main()
