@@ -1,22 +1,37 @@
 import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import AddButton from "./AddButton";
 
-export default function Ingredient({ data, onPress }) {
+export default function Ingredient({ data, onPress, addData }) {
+  function addData(){
+    return data;
+  }
+
   return (
     <View style={styles.root}>
-      <Pressable android_ripple={{ color: "#ccc" }} onPress={onPress}>
-        <View style={styles.inner}>
+      <View style={styles.inner}>
+        <Pressable onPress={onPress}>
           <Image source={{ uri: data.imageUrl }} style={styles.image} />
+        </Pressable>
+
+        <View style={styles.bottom}>
+          <Text style={styles.title}>{data.title}</Text>
+          <AddButton onPress={addData}>
+            <Ionicons name="add-circle-outline" size={36} color="green" />
+          </AddButton>
         </View>
-        <View>
-            <Text>{data.title}</Text>
-            <Button title="Add to prepper"/>
-        </View>
-      </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  title: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+    margin: 5,
+  },
   root: {
     margin: 16,
     borderRadius: 8,
@@ -28,5 +43,12 @@ const styles = StyleSheet.create({
   inner: {
     borderRadius: 8,
     overflow: "hidden",
+    backgroundColor: "white",
+  },
+  bottom: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
   },
 });

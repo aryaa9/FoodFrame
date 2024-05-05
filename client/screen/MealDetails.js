@@ -1,11 +1,10 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useLayoutEffect } from "react";
+import Nutri from "../components/Nutri";
+import List from "../components/List";
 
 export default function MealDetailsScreen({ route, navigation }) {
   const selectedMeal = route.params.data;
-  navigation.setOptions({
-    title: selectedMeal.title,
-  });
 
   const mealData = {
     dish_name: "Broccoli and Chicken Stir-Fry",
@@ -29,45 +28,47 @@ export default function MealDetailsScreen({ route, navigation }) {
       "When you're ready to serve, reheat the broccoli and chicken in a skillet or microwave and then combine them.",
     ],
   };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: mealData.dish_name,
+    });
+  }, [mealData, navigation]);
+
+  
   return (
     <ScrollView style={styles.root}>
       <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
       <View style={styles.foodData}>
-
         <View>
           <Text style={styles.subtitle}>Ingredients</Text>
-          <View>
-            <Text>ingredients information</Text>
-          </View>
+          <List data={mealData.ingredients}/>
         </View>
 
         <View>
           <Text style={styles.subtitle}>Nutritional Information</Text>
-          <View>
-            <Text>Nutritional information</Text>
-          </View>
+          <Nutri {...mealData.nutritional_information} />
         </View>
 
         <View>
           <Text style={styles.subtitle}>Instructions</Text>
-          <View>
-            <Text>Instructions information</Text>
-          </View>
+          <List data={mealData.instructions}/>
         </View>
 
         <View>
           <Text style={styles.subtitle}>Tips</Text>
-          <View>
-            <Text>tips</Text>
-          </View>
+          <List data={mealData.tips}/>
         </View>
-
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  root:{
+    flex: 1,
+    height: '150%'
+  },
   image: {
     width: "100%",
     height: 300,
@@ -87,10 +88,11 @@ const styles = StyleSheet.create({
     top: 280,
     backgroundColor: "white",
     width: "100%",
-    height: 500,
     borderRadius: 20,
     paddingTop: 15,
     paddingHorizontal: 15,
+    flex: 1,
+    height: 1000
   },
   subtitle: {
     fontSize: 20,
