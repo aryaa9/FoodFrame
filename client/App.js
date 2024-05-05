@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MealsPage from "./screen/MealsPage";
 import AddIngredients from "./screen/AddIngredients";
@@ -9,11 +9,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MealDetails from "./screen/MealDetails";
+import CartScreen from "./screen/CartScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  function pressedButton() {
+    return;
+  }
   function IngDetails() {
     return (
       <Stack.Navigator
@@ -27,10 +31,18 @@ export default function App() {
           name="IngredientsPage"
           component={IngredientsPage}
           options={{
-            title: "Ingredients Page",
+            title: "Ingredients",
+            headerRight: () => {
+              <Button
+                title="Cart"
+                onPress={() => alert("Button clicked")}
+                color="white"
+              />;
+            },
           }}
         />
         <Stack.Screen name="Details" component={IngredientDetails} />
+        <Stack.Screen name="Cart" component={CartScreen} />
       </Stack.Navigator>
     );
   }
@@ -49,7 +61,6 @@ export default function App() {
           component={MealsPage}
           options={{
             title: "Meals Page",
-            
           }}
         />
         <Stack.Screen
@@ -68,7 +79,7 @@ export default function App() {
           headerStyle: { backgroundColor: "#016b3f" },
           headerTintColor: "white",
           contentStyle: { backgroundColor: "#e3e9e5" },
-          tabBarActiveTintColor: { backgroundColor: "#016b3f" }
+          tabBarActiveTintColor: { backgroundColor: "#016b3f" },
         }}
       >
         <Tab.Screen
@@ -77,7 +88,6 @@ export default function App() {
           options={{
             tabBarLabel: "Meals",
             headerShown: false,
-            
           }}
         />
         <Tab.Screen
