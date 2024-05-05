@@ -1,12 +1,16 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput } from 'react-native';
+import { Header, Card, Button, Icon } from 'react-native-elements';
 import ImagePickerComponent from '../components/ImagePickerComponent'; 
 
 export default function AddIngredients() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}> Image part  </Text>
-      <ImagePickerComponent />
+      <Card>
+        <Card.Divider/>
+        <ImagePickerComponent />
+  
+      </Card>
     </SafeAreaView>
   );
 };
@@ -21,5 +25,11 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     marginBottom: 20,
-  }
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+  },
 });
