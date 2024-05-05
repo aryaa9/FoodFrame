@@ -12,6 +12,7 @@ const ImagePickerComponent = () => {
     console.log("Ingredient Name:", ingredientName); // Log the ingredient name whenever it changes
   }, [ingredientName]); // This effect depends on `ingredientName` and runs on change
 
+
   const handleMediaAccess = async (type) => {
     let result;
     if (type === 'camera') {
@@ -40,13 +41,12 @@ const ImagePickerComponent = () => {
         console.log("Error accessing media:", e);
       });
     }
-
+  
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      await uploadImage(result.assets[0].uri).catch((e) => console.log("Error uploading image:", e));
     }
   };
-
+ 
   const uploadImage = async (uri) => {
     try {
       const response = await fetch(uri);
@@ -61,6 +61,33 @@ const ImagePickerComponent = () => {
     }
   };
 
+  const submitImageData = async (imageUri, ingredientName) => {
+    console.log(ingredientName);
+    try {
+      const firebaseUrl = await uploadImage(imageUri); // Assuming this function uploads the image and returns the URL
+  
+      const response = await fetch('http://192.168.37.35:3000/upload_image_info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image_url: firebaseUrl,
+          ingredient_name: ingredientName,
+        }),
+      });
+  
+      const responseData = await response.json();
+      console.log('Server response:', responseData);
+    } catch (error) {
+      console.error('Error uploading image data:', error);
+    }
+  };
+  
+  const submitData = () => {
+    submitImageData(image, ingredientName).catch((e) => console.log("Error submitting data:", e));
+  }
+
   return (
     <View style={styles.container}>
       <Button title="Pick an image from camera roll" onPress={() => handleMediaAccess('gallery')} />
@@ -73,6 +100,7 @@ const ImagePickerComponent = () => {
         placeholder="Enter Ingredient Name"
         keyboardType="default"
       />
+      <Button onPress={submitData} title='Submit'/>
     </View>
   );
 };
